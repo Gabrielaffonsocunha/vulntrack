@@ -7,6 +7,13 @@ const form = document.querySelector('#create-form');
 const toast = document.querySelector('#toast');
 let toastTimer;
 
+function setCurrentDate() {
+  const dateLabel = new Intl.DateTimeFormat('pt-BR', {
+    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+  }).format(new Date());
+  document.querySelector('.page-heading .eyebrow').textContent = dateLabel.toLocaleUpperCase('pt-BR');
+}
+
 function showToast(message) {
   toast.textContent = message;
   toast.classList.add('show');
@@ -135,4 +142,5 @@ document.querySelector('#export-button').addEventListener('click', async () => {
   link.download = 'vulntrack-inventario.csv'; link.click(); URL.revokeObjectURL(link.href);
 });
 
+setCurrentDate();
 refresh().catch(() => showToast('A API está indisponível. Tente recarregar a página.'));
