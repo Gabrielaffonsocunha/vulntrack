@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f7fb">
+  <title>VulnTrack — Gestão de vulnerabilidades</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <a class="brand" href="#"><span class="brand-mark">V</span><span>vulntrack<small>SECURITY OPERATIONS</small></span></a>
+      <div class="nav-label">WORKSPACE</div>
+      <a class="nav-item active" href="#"><span class="nav-icon">▦</span> Visão geral</a>
+      <a class="nav-item" href="#vulnerabilities"><span class="nav-icon">◈</span> Vulnerabilidades <span class="nav-count" id="nav-count">0</span></a>
+      <div class="side-footer"><div class="side-note"><span class="live-dot"></span> Ambiente de demonstração</div><div class="profile"><div class="avatar">GA</div><div><strong>Gabriel Affonso</strong><small>Administrador local</small></div><span class="more">···</span></div></div>
+    </aside>
+    <main class="main">
+      <header class="topbar"><div class="crumb">Workspace <span>/</span> <strong>Visão geral</strong></div><div class="top-actions"><span class="demo-pill"><i></i> DADOS FICTÍCIOS</span><button class="icon-button" aria-label="Ajuda">?</button></div></header>
+      <section class="page-heading"><div><div class="eyebrow">QUARTA-FEIRA, 19 DE NOVEMBRO DE 2026</div><h1>Visão geral</h1><p>Acompanhe riscos, prazos e o andamento das correções.</p></div><button class="primary-button" id="new-button"><span>＋</span> Nova vulnerabilidade</button></section>
+      <section class="metric-grid" aria-label="Resumo">
+        <article class="metric-card"><div class="metric-top"><span>Total cadastradas</span><span class="metric-icon purple">◈</span></div><strong id="metric-total">—</strong><small>itens no inventário</small></article>
+        <article class="metric-card"><div class="metric-top"><span>Em aberto</span><span class="metric-icon blue">◷</span></div><strong id="metric-open">—</strong><small>aguardando tratamento</small></article>
+        <article class="metric-card"><div class="metric-top"><span>Críticas abertas</span><span class="metric-icon red">↗</span></div><strong id="metric-critical">—</strong><small>prioridade imediata</small></article>
+        <article class="metric-card"><div class="metric-top"><span>Prazo vencido</span><span class="metric-icon amber">!</span></div><strong id="metric-overdue">—</strong><small>precisam de acompanhamento</small></article>
+      </section>
+      <section class="content-card" id="vulnerabilities">
+        <div class="table-heading"><div><h2>Vulnerabilidades</h2><p>Inventário e acompanhamento de remediação</p></div><button class="secondary-button" id="export-button">↓ <span>Exportar CSV</span></button></div>
+        <div class="filters"><label class="search-box"><span>⌕</span><input id="search" type="search" placeholder="Buscar por ativo, CVE ou título"></label><select id="status-filter" aria-label="Filtrar por status"><option value="">Todos os status</option><option>Aberta</option><option>Em análise</option><option>Em correção</option><option>Validada</option><option>Aceita</option></select><select id="severity-filter" aria-label="Filtrar por criticidade"><option value="">Todas as criticidades</option><option>Crítica</option><option>Alta</option><option>Média</option><option>Baixa</option></select></div>
+        <div class="table-wrap"><table><thead><tr><th>VULNERABILIDADE</th><th>ATIVO</th><th>CRITICIDADE</th><th>STATUS</th><th>RESPONSÁVEL</th><th>PRAZO</th><th></th></tr></thead><tbody id="table-body"><tr><td colspan="7" class="loading">Carregando inventário…</td></tr></tbody></table></div>
+        <div class="table-foot"><span id="result-count">—</span><span>Ordenado por criticidade</span></div>
+      </section>
+      <footer class="page-foot">VulnTrack <span>·</span> Projeto demonstrativo para portfólio <span>·</span> <a href="/docs" target="_blank" rel="noreferrer">Documentação da API</a></footer>
+    </main>
+  </div>
+  <dialog id="create-dialog">
+    <form id="create-form" method="dialog">
+      <div class="dialog-head"><div><div class="eyebrow">NOVO REGISTRO</div><h2>Cadastrar vulnerabilidade</h2></div><button type="button" class="close-button" id="close-dialog" aria-label="Fechar">×</button></div>
+      <div class="form-grid">
+        <label class="field full">Título<input name="title" required minlength="3" maxlength="140" placeholder="Ex.: Biblioteca desatualizada no serviço web"></label>
+        <label class="field">Ativo<input name="asset" required minlength="2" maxlength="80" placeholder="app-demo-01"></label>
+        <label class="field">CVE (opcional)<input name="cve" maxlength="32" placeholder="CVE-2025-12345"></label>
+        <label class="field">Criticidade<select name="severity" required><option>Crítica</option><option>Alta</option><option selected>Média</option><option>Baixa</option></select></label>
+        <label class="field">CVSS (0 a 10)<input name="cvss" type="number" min="0" max="10" step="0.1" placeholder="Ex.: 7.5"></label>
+        <label class="field">Prazo<input name="due_date" type="date"></label>
+        <label class="field">Responsável<input name="owner" maxlength="80" placeholder="Equipe de infraestrutura"></label>
+        <label class="field full">Plano de tratamento<textarea name="mitigation" maxlength="1500" rows="3" placeholder="Descreva a ação planejada e como será validada."></textarea></label>
+      </div>
+      <div class="dialog-actions"><button type="button" class="secondary-button" id="cancel-dialog">Cancelar</button><button type="submit" class="primary-button">Salvar registro</button></div>
+    </form>
+  </dialog>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <script src="/app.js"></script>
+</body>
+</html>
