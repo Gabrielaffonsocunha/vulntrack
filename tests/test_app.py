@@ -27,6 +27,7 @@ class VulnTrackApiTests(unittest.TestCase):
         self.assertEqual(summary["total"], 4)
         self.assertEqual(summary["open"], 3)
         self.assertEqual(summary["critical"], 1)
+        self.assertEqual(summary["overdue"], 1)
 
     def test_create_and_filter_by_asset(self):
         created = self.client.post("/api/vulnerabilities", json={
@@ -45,6 +46,12 @@ class VulnTrackApiTests(unittest.TestCase):
     def test_invalid_cve_is_rejected(self):
         response = self.client.post("/api/vulnerabilities", json={
             "title": "Registro inválido", "asset": "host-01", "severity": "Baixa", "cve": "not-a-cve"
+        })
+        self.assertEqual(response.status_code, 422)
+
+    def test_required_text_cannot_be_only_whitespace(self):
+        response = self.client.post("/api/vulnerabilities", json={
+            "title": "   ", "asset": "host-01", "severity": "Baixa"
         })
         self.assertEqual(response.status_code, 422)
 
