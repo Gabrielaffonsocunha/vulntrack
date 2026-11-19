@@ -4,7 +4,7 @@
 
 O VulnTrack é um projeto demonstrativo para registrar vulnerabilidades de ativos fictícios e acompanhar prioridade, prazo, responsável e plano de tratamento. Ele foi criado para estudo e portfólio; não substitui uma plataforma de gestão de vulnerabilidades pronta para produção.
 
-O projeto reúne uma API REST, um painel web responsivo, persistência SQLite e execução local opcional em Docker. Os registros iniciais e os nomes dos ativos são dados de demonstração.
+O projeto reúne uma API REST, um painel web responsivo, persistência SQLite e execução local opcional em Docker. Os registros iniciais e os nomes dos ativos são dados de demonstração. As datas de prazo dos exemplos são calculadas na inicialização em relação ao dia atual; um item fictício começa vencido para demonstrar o indicador de acompanhamento.
 
 ## 2. Funcionalidades
 
@@ -174,7 +174,7 @@ pip install -r requirements.txt
 python -m unittest discover -s tests -v
 ```
 
-Os testes cobrem a carga inicial, indicadores, criação e busca, validação do identificador CVE, transições permitidas e bloqueadas, e exclusão.
+Os testes cobrem a carga inicial, indicadores, criação e busca, validação do identificador CVE, rejeição de campos obrigatórios em branco, transições permitidas e bloqueadas, e exclusão.
 
 O workflow `Validate VulnTrack` repete os testes em cada push e pull request. O pipeline valida a API e as regras testadas; não substitui teste de carga, teste de segurança ou execução do container em uma infraestrutura real.
 
