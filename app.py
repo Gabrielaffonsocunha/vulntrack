@@ -3,7 +3,7 @@ from __future__ import annotations
 import os
 import sqlite3
 from contextlib import asynccontextmanager
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Literal
 
@@ -54,11 +54,12 @@ def initialize_database() -> None:
         count = db.execute("SELECT COUNT(*) FROM vulnerabilities").fetchone()[0]
         if count == 0:
             now = datetime.now(timezone.utc).isoformat(timespec="seconds")
+            today = date.today()
             sample_rows = [
-                ("Atualização de biblioteca web pendente", "CVE-2099-12345", "app-demo-01", "Crítica", 9.8, "Aberta", "2026-11-25", "Equipe App", "Aplicação de demonstração; avaliar atualização e validar em homologação."),
-                ("Servidor de laboratório sem correção recente", "CVE-2099-23456", "srv-lab-02", "Alta", 8.1, "Em análise", "2026-12-02", "Infraestrutura", "Confirmar versão afetada e janela de manutenção."),
-                ("Configuração de TLS abaixo da política", None, "web-demo-03", "Média", 5.4, "Em correção", "2026-12-10", "Plataforma", "Mudança planejada para ambiente de teste."),
-                ("Pacote de exemplo com versão antiga", "CVE-2099-34567", "dev-container-01", "Baixa", 3.1, "Validada", "2026-11-15", "Desenvolvimento", "Atualização simulada e validação registrada."),
+                ("Atualização de biblioteca web pendente", "CVE-2099-12345", "app-demo-01", "Crítica", 9.8, "Aberta", (today + timedelta(days=6)).isoformat(), "Equipe App", "Aplicação de demonstração; avaliar atualização e validar em homologação."),
+                ("Servidor de laboratório sem correção recente", "CVE-2099-23456", "srv-lab-02", "Alta", 8.1, "Em análise", (today - timedelta(days=1)).isoformat(), "Infraestrutura", "Confirmar versão afetada e janela de manutenção."),
+                ("Configuração de TLS abaixo da política", None, "web-demo-03", "Média", 5.4, "Em correção", (today + timedelta(days=5)).isoformat(), "Plataforma", "Mudança planejada para ambiente de teste."),
+                ("Pacote de exemplo com versão antiga", "CVE-2099-34567", "dev-container-01", "Baixa", 3.1, "Validada", (today - timedelta(days=4)).isoformat(), "Desenvolvimento", "Atualização simulada e validação registrada."),
             ]
             db.executemany("""
                 INSERT INTO vulnerabilities
@@ -103,9 +104,17 @@ class VulnerabilityCreate(BaseModel):
                 raise ValueError("Use o formato CVE-AAAA-NNNN.")
         return value
 
-    @field_validator("title", "asset", "owner", "mitigation")
+    @field_validator("title", "asset")
     @classmethod
-    def trim_text(cls, value: str | None) -> str | None:
+    def require_nonblank_text(cls, value: str) -> str:
+        value = value.strip()
+        if not value:
+            raise ValueError("Este campo não pode ficar vazio.")
+        return value
+
+    @field_validator("owner", "mitigation")
+    @classmethod
+    def trim_optional_text(cls, value: str | None) -> str | None:
         return value.strip() if value is not None else None
 
 
