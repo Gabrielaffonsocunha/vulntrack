@@ -4,6 +4,12 @@ Painel demonstrativo para acompanhar vulnerabilidades, prazos e planos de tratam
 
 ![VulnTrack — demonstração local](https://img.shields.io/badge/demo-local-6654df)
 
+## Prévia do painel
+
+![Mockup ilustrativo do painel VulnTrack — dados fictícios](docs/images/vulntrack-preview.jpg)
+
+*Mockup visual para apresentação, com dados fictícios. Esta imagem não é uma captura real da aplicação; execute o projeto localmente para ver a interface funcionando.*
+
 ## O que o projeto demonstra
 
 - API REST em Python com FastAPI e persistência SQLite.
