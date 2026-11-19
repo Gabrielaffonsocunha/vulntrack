@@ -1,0 +1,19 @@
+services:
+  vulntrack:
+    build: .
+    container_name: vulntrack-demo
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - vulntrack-data:/app/data
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    restart: unless-stopped
+
+volumes:
+  vulntrack-data:
