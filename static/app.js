@@ -139,7 +139,8 @@ document.querySelector('#export-button').addEventListener('click', async () => {
   const csv = '\ufeff' + [columns.join(';'), ...items.map((item) => columns.map((key) => quote(item[key])).join(';'))].join('\r\n');
   const link = document.createElement('a');
   link.href = URL.createObjectURL(new Blob([csv], {type: 'text/csv;charset=utf-8'}));
-  link.download = 'vulntrack-inventario.csv'; link.click(); URL.revokeObjectURL(link.href);
+  link.download = 'vulntrack-inventario.csv'; link.click();
+  setTimeout(() => URL.revokeObjectURL(link.href), 1000);
 });
 
 setCurrentDate();
