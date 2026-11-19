@@ -69,7 +69,6 @@ Os testes verificam carga dos dados demonstrativos, resumo, cadastro, busca, val
 ```mermaid
 stateDiagram-v2
   [*] --> Aberta
-  [*] --> Aceita
   Aberta --> EmAnalise
   Aberta --> Aceita
   EmAnalise --> EmCorrecao
