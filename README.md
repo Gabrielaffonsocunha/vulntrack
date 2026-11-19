@@ -12,6 +12,11 @@ Painel demonstrativo para acompanhar vulnerabilidades, prazos e planos de tratam
 - Fluxo de status com transições permitidas e tratamento de conflitos.
 - Container sem usuário privilegiado, filesystem somente leitura e porta local.
 - Testes automatizados e validação no GitHub Actions.
+- Interface sem dependência de fontes, imagens ou scripts externos.
+
+## Documentação
+
+Consulte [docs/DOCUMENTACAO.md](docs/DOCUMENTACAO.md) para arquitetura, regras de negócio, endpoints, validação e limites de segurança.
 
 ## Pré-requisitos
 
@@ -89,12 +94,12 @@ Transições não permitidas retornam `409 Conflict`.
 ## Estrutura
 
 ```text
-app.py                         API, regras de negócio e banco SQLite
-static/                        Painel HTML, CSS e JavaScript
-tests/test_app.py               Testes automatizados da API
-Dockerfile                      Imagem com usuário sem privilégios
-docker-compose.yml               Execução local com controles básicos
-.github/workflows/validate.yml   Validação contínua
+app.py                     API, regras de negócio e banco SQLite
+static/                    Painel HTML, CSS e JavaScript
+tests/test_app.py           Testes automatizados da API
+Dockerfile                  Imagem com usuário sem privilégios
+docker-compose.yml          Execução local com controles básicos
+.github/workflows/validate.yml  Validação contínua
 ```
 
 ## Próximas evoluções
